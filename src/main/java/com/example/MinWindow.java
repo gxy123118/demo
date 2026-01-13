@@ -12,7 +12,6 @@ public class MinWindow {
 //    输出："BANC"
 //    解释：最小覆盖子串 "BANC" 包含来自字符串 t 的 'A'、'B' 和 'C'。
 //    示例 2：
-//
 //    输入：s = "a", t = "a"
 //    输出："a"
 //    解释：整个字符串 s 是最小覆盖子串。
@@ -23,27 +22,62 @@ public class MinWindow {
 //    解释: t 中两个字符 'a' 均应包含在 s 的子串中，
 //    因此没有符合条件的子字符串，返回空字符串。
     public static void main(String[] args) {
-        ArrayList<int[]> a=new ArrayList<>();
-        long l = 3;
-        float f = 3.0f;
+        String s = "ADOBECODEBANC";
+        String t = "ABC";
+        MinWindow minWindow = new MinWindow();
+        System.out.println(minWindow.minWindow(s, t));
 
 
     }
 
     public String minWindow(String s, String t) {
-        int[] tNum = new int[26];
-        for (int i = 0; i < t.length(); i++) {
-            tNum[t.charAt(i) - 'a']++;
+        if (t.length() > s.length()) {
+            return "";
         }
-        return null;
-    }
-
-    public boolean isMatch(int[] sNum, int[] tNum) {
-        for (int i = 0; i < 26; i++) {
-            if (tNum[i] != 0 && tNum[i] != sNum[i]) {
-                return false;
+        int[] tNum = new int[128];
+        char[] charArray = t.toCharArray();
+        int needType = 0;
+        for (char c : charArray) {
+            if (tNum[c] == 0) {
+                needType++;
             }
+            tNum[c]++;
         }
-        return true;
+        int l = 0;
+        int v = 0;
+        int minL = Integer.MAX_VALUE;
+        int start = 0;
+        boolean b = true;
+        int[] window = new int[128];
+        for (int r = 0; r < s.length(); r++) {
+            char ch = s.charAt(r);
+            //是t所需要的
+            if (tNum[ch] > 0) {
+                window[ch]++;
+                if (tNum[ch] == window[ch]) {
+                    v++;
+                }
+            }
+            //收缩窗口
+            while (v == needType) {
+                int len = r - l + 1;
+                if (len < minL) {
+                    minL = len;
+                    start = l;
+                }
+                char lch = s.charAt(l);
+
+                if (tNum[lch] > 0) {
+                    window[lch]--;
+                    if (window[lch] < tNum[lch]) {
+                        v--;
+                    }
+                }
+                l++;
+
+            }
+
+        }
+        return minL == Integer.MAX_VALUE ? "" : s.substring(start, start + minL);
     }
 }
