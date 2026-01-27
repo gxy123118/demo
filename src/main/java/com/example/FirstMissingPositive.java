@@ -16,40 +16,36 @@ public class FirstMissingPositive {
 //    输出：2
 //    解释：1 在数组中，但 2 没有。
 //    示例 3：
-//
 //    输入：nums = [7,8,9,11,12]
 //    输出：1
 //    解释：最小的正数 1 没有出现。
     public static void main(String[] args) {
+
         FirstMissingPositive f = new FirstMissingPositive();
-        int num[] = {1, 2, 0};
+        int num[] = {7, 8, 9, 11, 12};
         int i = f.firstMissingPositive(num);
         System.out.println(i);
     }
 
     public int firstMissingPositive(int[] nums) {
-        Arrays.sort(nums);
-        int a = nums[0];
-        boolean b = true;
-        for (int i = 1; i < nums.length; i++) {
-            if (nums[i] > 0 && b) {
-                a = nums[i];
-                b = false;
-            } else {
-                a++;
+        int n = nums.length;
+        for (int i = 0; i < n; i++) {
+            int cur=nums[i];
+            while (cur > 0 && cur <= n && cur != nums[cur - 1]) {
+                int targetIndex = cur - 1;
+                int temp = nums[cur - 1];
+                nums[targetIndex] = cur;
+                cur = temp;
             }
-            if (nums[i] - 1 > 0 && a != nums[i]) {
-                return nums[i] - 1;
-            }
-            if (i == nums.length - 1) {
-                if (nums[i] > 0) {
-                    return nums[i] + 1;
-                } else {
-                    return 1;
-                }
+
+        }
+        for (int i = 0; i < n; i++) {
+
+            if (nums[i] != i + 1) {
+                return i + 1;
             }
         }
 
-        return 0;
+        return nums.length + 1;
     }
 }
