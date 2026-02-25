@@ -32,27 +32,52 @@ public class CF {
 //        System.out.println("【" + Thread.currentThread().getName() + "】main 打印时间：" + System.currentTimeMillis() + "，耗时：" + (System.currentTimeMillis() - mainStart) + "ms");
 //        System.out.println("main");
 //        Thread.sleep(80000);
+//        CompletableFuture<String> stringCompletableFuture = CompletableFuture.supplyAsync(() -> {
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                throw new RuntimeException(e);
+//            }
+//            return "任务一结果";
+//        });
+//        CompletableFuture<String> stringCompletableFuture1 = stringCompletableFuture.thenApply((e) -> {
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException i) {
+//                throw new RuntimeException(i);
+//            }
+//            return "任务二结果-"+e;
+//        });
+//        CompletableFuture<Void> stringCompletableFuture2 = stringCompletableFuture1.thenAccept((e) -> {
+//            System.out.println("任务三接收结果-" + e);
+//        });
+//
+//        System.out.println("main");
+//        Thread.sleep(5000);
+
+        System.out.println(main1());
+    }
+
+    public static Object main1() throws InterruptedException {
+
         CompletableFuture<String> stringCompletableFuture = CompletableFuture.supplyAsync(() -> {
             try {
-                Thread.sleep(1000);
+                Thread.sleep(5000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            return "任务一结果";
-        });
-        CompletableFuture<String> stringCompletableFuture1 = stringCompletableFuture.thenApply((e) -> {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException i) {
-                throw new RuntimeException(i);
-            }
-            return "任务二结果-"+e;
-        });
-        CompletableFuture<Void> stringCompletableFuture2 = stringCompletableFuture1.thenAccept((e) -> {
-            System.out.println("任务三接收结果-" + e);
+            return "result";
         });
 
         System.out.println("main");
-        Thread.sleep(5000);
+        CompletableFuture.runAsync(() -> {}).thenApply(r -> {
+            System.out.println(r);
+        return "result";
+        }).thenAccept(r -> {
+            System.out.println(r);
+        });
+
+        return stringCompletableFuture.thenApply(r -> "handler" + r);
+
     }
 }
