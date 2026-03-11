@@ -3,7 +3,6 @@ package com.example.demo.mytest;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-
 public class CF {
 
     public static void main(String[] args) throws InterruptedException {
@@ -76,7 +75,6 @@ public class CF {
         }).thenAccept(r -> {
             System.out.println(r);
         });
-
         return stringCompletableFuture.thenApply(r -> "handler" + r);
 
     }

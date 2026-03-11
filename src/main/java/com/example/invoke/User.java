@@ -1,6 +1,6 @@
 package com.example.invoke;
 
-import com.example.demo.mytest.An;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class User implements Comparable<User> {
